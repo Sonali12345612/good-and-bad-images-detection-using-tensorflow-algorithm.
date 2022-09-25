@@ -1,0 +1,184 @@
+import tensorflow as tf
+from tensorflow import keras
+from tensorflow.keras.optimizers import RMSprop
+import numpy as np
+import pandas as pd
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+import matplotlib.pyplot as plt
+import os
+import cv2
+img=image.load_img ("C://Users//Admin//Desktop//project data//training//good images//abc.JFIF")
+plt.imshow(img)
+<matplotlib.image.AxesImage at 0x2b5272cfd00>
+
+cv2.imread ("C://Users//Admin//Desktop//project data//training//good images//abc.JFIF")
+array([[[162, 157, 156],
+        [162, 157, 156],
+        [163, 158, 157],
+        ...,
+        [117, 109, 102],
+        [116, 108, 101],
+        [116, 108, 101]],
+
+       [[162, 157, 156],
+        [162, 157, 156],
+        [163, 158, 157],
+        ...,
+        [118, 110, 103],
+        [117, 109, 102],
+        [116, 108, 101]],
+
+       [[163, 158, 157],
+        [163, 158, 157],
+        [164, 159, 158],
+        ...,
+        [119, 111, 104],
+        [118, 110, 103],
+        [118, 110, 103]],
+
+       ...,
+
+       [[ 92,  94,  94],
+        [ 79,  81,  81],
+        [109, 111, 111],
+        ...,
+        [ 57,  58,  56],
+        [ 74,  75,  73],
+        [102, 103, 101]],
+
+       [[ 85,  87,  87],
+        [ 66,  68,  68],
+        [ 91,  93,  93],
+        ...,
+        [ 57,  58,  56],
+        [ 74,  75,  73],
+        [103, 104, 102]],
+
+       [[ 77,  79,  79],
+        [ 52,  54,  54],
+        [ 70,  72,  72],
+        ...,
+        [ 57,  58,  56],
+        [ 75,  76,  74],
+        [104, 105, 103]]], dtype=uint8)
+cv2.imread ("C://Users//Admin//Desktop//project data//training//good images//abc.JFIF").shape
+(275, 183, 3)
+train=ImageDataGenerator(rescale=1/162)
+validation=ImageDataGenerator(rescale=1/162)
+train_dataset=train.flow_from_directory("C://Users//Admin//Desktop//project data//training//",target_size=(150,150),batch_size=2,class_mode='binary')
+Found 2 images belonging to 2 classes.
+validation_dataset=validation.flow_from_directory("C://Users//Admin//Desktop//project data//validation//",target_size=(150,150),batch_size=2,class_mode='binary')
+Found 2 images belonging to 2 classes.
+train_dataset.class_indices
+{'bad images': 0, 'good images': 1}
+train_dataset.classes
+array([1, 1])
+model=tf.keras.models.Sequential([tf.keras.layers.Conv2D(16,(3,3),activation ='relu',input_shape=(150,150,3)),
+                                  tf.keras.layers.MaxPool2D(2,2),
+#
+                                  tf.keras.layers.Conv2D(32,(3,3),activation ='relu'),
+                                  tf.keras.layers.MaxPool2D(2,2), 
+#
+                                  tf.keras.layers.Conv2D(64,(3,3),activation ='relu'),
+                                  tf.keras.layers.MaxPool2D(2,2), 
+## 
+                                  tf.keras.layers.Flatten(),
+##
+                                  tf.keras.layers.Dense(512,activation ='relu'),
+##
+                                  tf.keras.layers.Dense(1,activation ='sigmoid')])
+model.compile(loss ='binary_crossentropy',
+              optimizer= RMSprop(lr=0.001),
+              metrics=['accuracy'])
+model_fit=model.fit(train_dataset,
+                    steps_per_epoch=1,
+                    epochs=30,
+                   validation_data=validation_dataset)
+Epoch 1/30
+1/1 [==============================] - 2s 2s/step - loss: 0.5930 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 2/30
+1/1 [==============================] - 0s 254ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 3/30
+1/1 [==============================] - 0s 265ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 4/30
+1/1 [==============================] - 0s 270ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 5/30
+1/1 [==============================] - 0s 259ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 6/30
+1/1 [==============================] - 0s 256ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 7/30
+1/1 [==============================] - 0s 278ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 8/30
+1/1 [==============================] - 0s 290ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 9/30
+1/1 [==============================] - 0s 273ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 10/30
+1/1 [==============================] - 0s 258ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 11/30
+1/1 [==============================] - 0s 261ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 12/30
+1/1 [==============================] - 0s 263ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 13/30
+1/1 [==============================] - 0s 263ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 14/30
+1/1 [==============================] - 0s 265ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 15/30
+1/1 [==============================] - 0s 249ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 16/30
+1/1 [==============================] - 0s 255ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 17/30
+1/1 [==============================] - 0s 297ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 18/30
+1/1 [==============================] - 0s 284ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 19/30
+1/1 [==============================] - 0s 283ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 20/30
+1/1 [==============================] - 0s 317ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 21/30
+1/1 [==============================] - 0s 295ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 22/30
+1/1 [==============================] - 0s 282ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 23/30
+1/1 [==============================] - 0s 291ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 24/30
+1/1 [==============================] - 0s 257ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 25/30
+1/1 [==============================] - 0s 250ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 26/30
+1/1 [==============================] - 0s 311ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 27/30
+1/1 [==============================] - 0s 309ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 28/30
+1/1 [==============================] - 0s 263ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 29/30
+1/1 [==============================] - 0s 286ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+Epoch 30/30
+1/1 [==============================] - 0s 259ms/step - loss: 5.2083e-38 - accuracy: 1.0000 - val_loss: 5.2083e-38 - val_accuracy: 1.0000
+validation_dataset.class_indices
+{'bad images': 0, 'good images': 1}
+dir_path=("C://Users//Admin//Desktop//project data//training//bad images//")
+for i in os.listdir(dir_path):
+    img=image.load_img(dir_path+'//'+i)
+    plt.imshow(img)
+    plt.show()
+    
+    
+
+
+
+
+dir_path=("C://Users//Admin//Desktop//project data//training//good images//")
+for i in os.listdir(dir_path):
+    img=image.load_img(dir_path+'//'+i)
+    plt.imshow(img)
+    plt.show()
+    
+   
+  
+
+
+
+
+
+ 
